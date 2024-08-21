@@ -27,6 +27,7 @@ friendsRouter.post('/', BodyValidation(CreateFriendDTO), async (req: Request, re
     return res.status(HttpStatus.CREATED).json(friends)
 })
 
+
 friendsRouter.delete('/:id', async (req: Request, res: Response) => {
     const {id} = req.params
     const friends = await service.deleteFriend(id);
