@@ -14,4 +14,15 @@ model Friend {
   phone     String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  addresses Address[]
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  street    String
+  number    Int
+  city      String
+  zipCode   String
+  friendId  String
+  friend    Friend   @relation(fields: [friendId], references: [id])
 }

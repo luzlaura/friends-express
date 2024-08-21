@@ -1,13 +1,32 @@
 import {FriendsService} from "@modules/friends/service/friends.service";
 import {FriendsRepository} from "@modules/friends/repository/friends.repository";
 import {CreateFriendDTO, FriendDTO} from "@modules/friends/dto";
+import {AddressRepository} from "@modules/addresses/repository/address.repository";
 
 export class FriendsServiceImpl implements FriendsService {
-    constructor(private readonly repository: FriendsRepository) {
+    private addressesRepository: any;
+    constructor(
+        private readonly repository: FriendsRepository,
+        private readonly addressRepository: AddressRepository
+    ) {
     }
-    createFriend(friend: CreateFriendDTO): Promise<FriendDTO> {
-        return this.repository.create(friend)
+
+
+    async createFriend(friend: CreateFriendDTO): Promise<FriendDTO> {
+        const newFriend = await this.repository.create(friend);
+
+        if (friend.addresses && friend.addresses.length > 0) {
+            const addresses = await Promise.all(
+                friend.addresses.map(address =>
+                    this.addressesRepository.createAddress({ ...address, friendId: newFriend.id })
+                )
+            );
+            newFriend.addresses = addresses;
+        }
+
+        return newFriend;
     }
+
 
     deleteFriend(id: string): Promise<void> {
         return this.repository.delete(id)
