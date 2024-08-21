@@ -5,10 +5,14 @@ import {FriendsServiceImpl} from "@modules/friends/service";
 import {FriendsRepositoryImpl} from "@modules/friends/repository";
 import {BodyValidation} from "@utils/validation";
 import {CreateFriendDTO} from "@modules/friends/dto";
+import {AddressRepositoryImpl} from "@modules/addresses/repository/address.repository.impl";
 
 export const friendsRouter = Router()
 
-const service = new FriendsServiceImpl(new FriendsRepositoryImpl(db))
+const friendsRepository = new FriendsRepositoryImpl(db)
+const addressRepository = new AddressRepositoryImpl(db)
+
+const service = new FriendsServiceImpl(friendsRepository, addressRepository)
 
 friendsRouter.get('/', async (req: Request, res: Response) => {
     const friends = await service.getFriends();
@@ -23,9 +27,11 @@ friendsRouter.post('/', BodyValidation(CreateFriendDTO), async (req: Request, re
     return res.status(HttpStatus.CREATED).json(friends)
 })
 
+
 friendsRouter.delete('/:id', async (req: Request, res: Response) => {
     const {id} = req.params
     const friends = await service.deleteFriend(id);
 
     return res.status(HttpStatus.OK).json(friends)
+
 })
