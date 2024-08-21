@@ -32,5 +32,4 @@ friendsRouter.delete('/:id', async (req: Request, res: Response) => {
     const friends = await service.deleteFriend(id);
 
     return res.status(HttpStatus.OK).json(friends)
-
 })
