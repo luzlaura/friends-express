@@ -53,4 +53,5 @@ const FriendsTable: React.FC = () => {
     );
 };
 
+
 export default FriendsTable;
