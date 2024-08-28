@@ -1,25 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip } from '@mui/material';
-import axios from 'axios';
-import {Friend} from "../types/types.ts";
+import React from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip, CircularProgress, Typography } from '@mui/material';
+import useFriends from '../hooks/useFriends';
 
 const FriendsTable: React.FC = () => {
-    const [friends, setFriends] = useState<Friend[]>([]);
+    const {friends, error} = useFriends();
 
-    useEffect(() => {
-        const fetchFriends = async () => {
-            try {
-                // const response = await axios.get('/api/friends');
-                const response = await axios.get('http://localhost:8080/api/friends');
 
-                setFriends(response.data);
-            } catch (error) {
-                console.error('Error fetching friends:', error);
-            }
-        };
-
-        fetchFriends();
-    }, []);
 
     return (
         <TableContainer component={Paper}>
