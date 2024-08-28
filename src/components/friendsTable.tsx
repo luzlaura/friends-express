@@ -51,6 +51,7 @@ const FriendsTable: React.FC = () => {
             </Table>
         </TableContainer>
     );
+
 };
 
 
